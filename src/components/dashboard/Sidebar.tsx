@@ -1,13 +1,12 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
   Settings,
   ChevronLeft,
   ChevronRight,
-  CircleChevronRight
 } from 'lucide-react';
 
 interface SidebarItemProps {
@@ -45,6 +44,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
 
   return (
     <div className={cn(
@@ -54,7 +54,7 @@ export const Sidebar = () => {
       <div className="flex items-center justify-between mb-6 px-3 py-2">
         {!collapsed && (
           <h1 className="text-xl font-bold text-danger">
-            Crimson<span className="text-white">Shadow</span>
+            Hack<span className="text-white">Book.ai</span>
           </h1>
         )}
         <button 
@@ -69,7 +69,7 @@ export const Sidebar = () => {
         <SidebarItem 
           icon={<LayoutDashboard />} 
           label="Dashboard" 
-          active={true}
+          active={location.pathname === '/'}
           href="/"
           collapsed={collapsed}
         />
@@ -77,6 +77,7 @@ export const Sidebar = () => {
           icon={<Settings />} 
           label="Settings" 
           href="/settings"
+          active={location.pathname === '/settings'}
           collapsed={collapsed}
         />
       </nav>
