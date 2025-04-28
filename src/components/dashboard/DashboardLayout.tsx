@@ -17,7 +17,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <Sidebar />
+      <div className="sticky top-0 h-screen">
+        <Sidebar />
+      </div>
       <div className="flex-1 flex flex-col overflow-hidden w-full">
         <Header title={title} />
         <main className="flex-1 overflow-y-auto p-2 sm:p-4">
