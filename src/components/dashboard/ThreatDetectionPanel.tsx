@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import CodeSnippet from './CodeSnippet';
+import algos from "@/utils/algo.json"
 
 type ThreatAlgorithm = {
   id: string;
@@ -12,13 +15,28 @@ type ThreatAlgorithm = {
 };
 
 export function ThreatDetectionPanel() {
-  const algorithms: ThreatAlgorithm[] = [
-    { id: '1', name: 'anagram_detector', status: 'inactive' },
-    { id: '2', name: 'deep_payload', status: 'inactive' },
-    { id: '3', name: 'autoencoder', status: 'inactive' },
-    { id: '4', name: 'isolation_forest', status: 'inactive' },
-    { id: '5', name: 'ext_iforest', status: 'inactive' },
-  ];
+  const [algoData, setAlgoData] = useState(algos)
+
+  // useEffect(() => {
+  //   const fetchAlgoData = async () => {
+  //     try {
+  //       const res = await fetch("http://localhost:3000/algo");
+  //       const data = await res.json();
+  //       setAlgoData(data.data);
+  //     } catch (error) {
+
+  //     }
+  //   }
+
+  //   fetchAlgoData();
+  // }, [])
+
+  const algorithms: ThreatAlgorithm[] = algoData;
+
+  const handleShowCode = (id: String) => {
+    const codeSnippet = algoData.find(models => models.id === id).code_snippet;
+    return codeSnippet
+  }
 
   return (
     <Card className="w-full backdrop-blur-sm bg-card/30">
@@ -30,7 +48,7 @@ export function ThreatDetectionPanel() {
       <CardContent>
         <div className="mb-6">
           <h3 className="text-lg font-medium mb-4">AI/ML algorithms management</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="text-sm text-muted-foreground mb-2 block">Sensor ID</label>
@@ -42,7 +60,7 @@ export function ThreatDetectionPanel() {
                 </select>
               </div>
             </div>
-            
+
             <div>
               <label className="text-sm text-muted-foreground mb-2 block">General search</label>
               <div className="relative">
@@ -55,14 +73,13 @@ export function ThreatDetectionPanel() {
               </div>
             </div>
           </div>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b border-border text-left">
                   <th className="py-3 px-4 text-muted-foreground"></th>
                   <th className="py-3 px-4 text-muted-foreground">ALGORITHM</th>
-                  <th className="py-3 px-4 text-muted-foreground">STATUS</th>
                   <th className="py-3 px-4 text-muted-foreground text-center">ACTIONS</th>
                 </tr>
               </thead>
@@ -77,17 +94,10 @@ export function ThreatDetectionPanel() {
                       </div>
                     </td>
                     <td className="py-3 px-4 font-medium">{algorithm.name}</td>
-                    <td className={cn(
-                      "py-3 px-4",
-                      algorithm.status === 'active' ? 'text-green-500' : 'text-muted-foreground'
-                    )}>
-                      {algorithm.status}
-                    </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <Button variant="outline" size="sm">Train</Button>
-                        <Button variant="outline" size="sm">Detect</Button>
-                        <Button variant="outline" size="sm">Stop</Button>
+                        {/* <Button onClick={()=>handleShowCode(algorithm.id)} variant="outline" size="sm">Show Code</Button> */}
+                        <CodeSnippet code={handleShowCode(algorithm.id)}/>
                       </div>
                     </td>
                   </tr>
